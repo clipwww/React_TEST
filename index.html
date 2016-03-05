@@ -20,6 +20,12 @@
         </div><hr/>
         <div id="container_5">
         </div><hr/>
+        <div id="container_6">
+        </div><hr/>
+        <div id="container_7">
+        </div><hr/>
+        <div id="container_8">
+        </div><hr/>
 	</body>
 	<!--因為要先等DOM生成完畢，才開始製作組建，也可以使用jQ的ready，就不用放在下面了-->
 	<script src="https://fb.me/react-0.14.7.js"></script>
@@ -116,7 +122,7 @@
     		}
     	});
 
-    	ReactDOM.render(<TodoApp />, document.getElementById("container_2"))
+    	React.render(<TodoApp />, document.getElementById("container_2"))
 
 
 		var CommentBox = React.createClass({
@@ -365,5 +371,102 @@
             }
         });
         ReactDOM.render(<LikeButton/> , document.getElementById("container_5"));
+
+        var SetIntervalMixin = {
+            componentWillMount: function(){
+                this.intervals = [];
+            },
+            setInterval: function(){
+                this.intervals.push( setInterval.apply(null, arguments) );
+            },
+            componentWillUnmount: function(){
+                this.intervals.map( clearInterval );
+            },
+            handleStop: function(){
+                this.intervals.map( clearInterval );
+            }
+        };
+
+        var TickTock = React.createClass({
+            mixins: [SetIntervalMixin],//引用mixin
+            getInitialState: function(){
+                return{
+                    seconds: 0,
+                    clickState: false
+                };
+            },
+            componentDidMount: function(){
+                this.setInterval(this.tick, 1000);//調用mixin的方法
+            },
+            tick: function(){
+                this.setState({seconds: this.state.seconds + 1});
+            },
+            handleClick: function(){             
+                if(this.state.clickState){
+                    this.setInterval(this.tick, 1000);
+                }else{
+                    this.handleStop();                   
+                }
+
+                this.setState({clickState: !this.state.clickState});
+            },
+            render: function(){
+                return(
+                    <p onClick={this.handleClick}>
+                    {this.state.seconds} second.
+                    <br/>點擊【繼續/停止】計數
+                    </p>
+                );
+            }
+        });
+
+        ReactDOM.render(<TickTock/>, document.getElementById("container_6"));
+
+        var FancyCheckbox = React.createClass({
+            getInitialState: function(){
+                return{ checked:true}
+            },
+            handleClick: function(){
+                this.setState({ checked: !this.state.checked});
+            },
+            render: function(){
+                var {title, ...other} = this.props;
+                var fancyClass = this.state.checked ? "FancyChecked" : "FancyUnchecked" ;
+                var fancyTitle = this.state.checked ? "X" + title : "O" + title;
+                return(
+                    <label>
+                        <input {...other} 
+                        checked={this.state.checked} 
+                        className={fancyClass} 
+                        type="checkbox" 
+                        onClick={this.handleClick}/>
+                        {fancyTitle}
+                    </label>
+                );
+            }
+        });
+
+        ReactDOM.render(
+            <FancyCheckbox title="嗯?Tilte?">
+                Hello World!
+            </FancyCheckbox>, document.getElementById("container_7")
+        )
+
+        var MyComponent = React.createClass({
+            handleClick: function(){
+                this.refs.myTextInput.focus();
+            },
+            render: function(){
+                return(
+                <div>
+                    <input type="text" ref="myTextInput" />
+                    <input type="button" value="Focus the text input"
+                            onClick={this.handleClick} />
+                </div>                   
+                );
+
+            }
+        });
+        ReactDOM.render(<MyComponent/>, document.getElementById("container_8"));
     </script>
 </html>
