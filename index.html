@@ -8,30 +8,38 @@
 		<title>REACT TEST</title>
     </head>
 	<body>
-        <div id="example">
-        </div><hr/>
-		<div id="container_1">
-		</div><hr/>
-		<div id="container_2">
-		</div><hr/>
-		<div id="container_3">
-		</div><hr/>
-        <div id="container_4">
-        </div><hr/>
-        <div id="container_5">
-        </div><hr/>
-        <div id="container_6">
-        </div><hr/>
-        <div id="container_7">
-        </div><hr/>
-        <div id="container_8">
-        </div><hr/>
+        <div id="navbar">
+            </div>
+        <div class="container"> 
+            <div id="example">
+            </div><hr/>
+    		<div id="container_1">
+    		</div><hr/>
+    		<div id="container_2">
+    		</div><hr/>
+    		<div id="container_3">
+    		</div><hr/>
+            <div id="container_4">
+            </div><hr/>
+            <div id="container_5">
+            </div><hr/>
+            <div id="container_6">
+            </div><hr/>
+            <div id="container_7">
+            </div><hr/>
+            <div id="container_8">
+            </div><hr/>
+            <div id="container_9">
+            </div><hr/>
+        </div>
 	</body>
 	<!--因為要先等DOM生成完畢，才開始製作組建，也可以使用jQ的ready，就不用放在下面了-->
+    <link href="bootstrap.min.css" rel="stylesheet">
 	<script src="https://fb.me/react-0.14.7.js"></script>
    	<script src="https://fb.me/react-dom-0.14.7.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/showdown/0.3.1/showdown.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-bootstrap/0.28.3/react-bootstrap.min.js"></script>
     <script src="jquery-2.2.0.min.js"></script>
 
 	<script  type="text/babel">
@@ -122,7 +130,7 @@
     		}
     	});
 
-    	React.render(<TodoApp />, document.getElementById("container_2"))
+    	ReactDOM.render(<TodoApp />, document.getElementById("container_2"))
 
 
 		var CommentBox = React.createClass({
@@ -412,7 +420,7 @@
             },
             render: function(){
                 return(
-                    <p onClick={this.handleClick}>
+                    <p onClick={this.handleClick} >
                     {this.state.seconds} second.
                     <br/>點擊【繼續/停止】計數
                     </p>
@@ -437,7 +445,7 @@
                     <label>
                         <input {...other} 
                         checked={this.state.checked} 
-                        className={fancyClass} 
+                        className={fancyClass}
                         type="checkbox" 
                         onClick={this.handleClick}/>
                         {fancyTitle}
@@ -460,7 +468,7 @@
                 return(
                 <div>
                     <input type="text" ref="myTextInput" />
-                    <input type="button" value="Focus the text input"
+                    <input type="button" className="btn btn-info" value="Focus the text input"
                             onClick={this.handleClick} />
                 </div>                   
                 );
@@ -468,5 +476,67 @@
             }
         });
         ReactDOM.render(<MyComponent/>, document.getElementById("container_8"));
+
+        var Button = ReactBootstrap.Button;
+        var Grid = ReactBootstrap.Grid;
+        var Row = ReactBootstrap.Row;
+        var Col = ReactBootstrap.Col;
+        var Badge = ReactBootstrap.Badge;
+
+        var ReactBoot = React.createClass({
+            render: function(){
+               return(
+                    <Grid>
+                        <Row className="show-grid">
+                            <Col xs={6} md={4}><code>&lt;{'Col xs={6} md={4}'} /&gt;</code></Col>
+                            <Col xs={6} md={4}><code>&lt;{'Col xs={6} md={4}'} /&gt;</code></Col>
+                            <Col xs={6} md={4}><code>&lt;{'Col xs={6} md={4}'} /&gt;</code></Col>
+                        </Row>
+                    </Grid>
+                );
+            }
+        });
+        ReactDOM.render(<ReactBoot />, document.getElementById("container_9"));
+
+        var Navbar = ReactBootstrap.Navbar;
+        var Nav = ReactBootstrap.Nav;
+        var NavItem = ReactBootstrap.NavItem;
+        var NavDropdown = ReactBootstrap.NavDropdown;
+        var MenuItem = ReactBootstrap.MenuItem;
+
+        var NavBar = React.createClass({
+            render: function(){
+                return(
+                    <Navbar inverse>
+                        <Navbar.Header>
+                          <Navbar.Brand>
+                            <a href="#">React-Bootstrap</a>
+                          </Navbar.Brand>
+                          <Navbar.Toggle />
+                        </Navbar.Header>
+                        <Navbar.Collapse>
+                          <Nav>
+                            <NavItem eventKey={1} href="#">Link</NavItem>
+                            <NavItem eventKey={2} href="#">Link</NavItem>
+                            <NavDropdown eventKey={3} title="Dropdown" id="basic-nav-dropdown">
+                              <MenuItem eventKey={3.1}>Action</MenuItem>
+                              <MenuItem eventKey={3.2}>Another action</MenuItem>
+                              <MenuItem eventKey={3.3}>Something else here</MenuItem>
+                              <MenuItem divider />
+                              <MenuItem eventKey={3.3}>Separated link</MenuItem>
+                            </NavDropdown>
+                          </Nav>
+                          <Nav pullRight>
+                            <NavItem eventKey={1} href="#">Link Right</NavItem>
+                            <NavItem eventKey={2} href="#">Link Right</NavItem>
+                          </Nav>
+                        </Navbar.Collapse>
+                    </Navbar>
+                );
+            }
+        });
+
+        ReactDOM.render(<NavBar />, document.getElementById("navbar"));
+
     </script>
 </html>
